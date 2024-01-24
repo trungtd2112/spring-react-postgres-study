@@ -1,33 +1,44 @@
 package com.lab.spring.backend.controllers;
 
+import com.lab.spring.backend.graphql.inputs.UserInput;
 import com.lab.spring.backend.models.User;
-import com.lab.spring.backend.repositories.UserRepository;
+import com.lab.spring.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
 public class UserController {
-
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @QueryMapping
+    List<User> getUsers() {
+        return userService.getUsers();
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User _user = userRepository.save(new User(user.getName()));
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @QueryMapping
+    User getUserById(@Argument UUID id) {
+        return userService.getUserById(id);
+    }
+
+    @MutationMapping
+    User addUser(@Argument UserInput userInput) {
+        return userService.addUser(userInput);
+    }
+
+    @MutationMapping
+    User updateUser(@Argument UUID id, @Argument UserInput userInput) {
+        return userService.updateUser(id, userInput);
+    }
+
+    @MutationMapping
+    String deleteUser(@Argument UUID id) {
+        return userService.deleteUser(id);
     }
 }
