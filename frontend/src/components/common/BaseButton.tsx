@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactPropTypes } from "react";
 import PropTypes from "prop-types";
 
-const BaseButton = (props) => {
+const BaseButton = (props: any) => {
   return (
     <>
       <div className={props.wrapperClass}>
@@ -18,7 +18,7 @@ const BaseButton = (props) => {
 };
 
 BaseButton.propTypes = {
-  type: PropTypes.string,
+  type: PropTypes.oneOf(["button", "submit", "reset"]),
   wrapperClass: PropTypes.string,
   btnClass: PropTypes.string,
   btnText: PropTypes.string,

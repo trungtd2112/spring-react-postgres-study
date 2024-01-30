@@ -1,9 +1,9 @@
 import React from "react";
-import BaseSelect from "./BaseSelect";
-import BaseInput from "./BaseInput";
+import BaseSelect from "../common/BaseSelect";
+import BaseInput from "../common/BaseInput";
 import UserPostalCode from "./UserPostalCode";
 
-const UserAddress = (props) => {
+const UserAddress = (props: any) => {
   return (
     <>
       <div className="grid grid-cols-12 gap-4">
@@ -16,6 +16,7 @@ const UserAddress = (props) => {
             labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white flex items-center justify-between mb-4"
             selectWrapperClass="col-span-4 flex items-center"
             label="都道府県"
+            setValue={() => {}}
           ></BaseSelect>
           <BaseInput
             labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white flex items-center justify-between mb-4"

@@ -1,8 +1,8 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
-const BaseInput = (props) => {
-  const handleChange = (e) => {
+const BaseSelect = (props: any) => {
+  const handleChange = (e: any) => {
     props.setValue(e.target.value);
   };
 
@@ -22,22 +22,26 @@ const BaseInput = (props) => {
 
         <div
           className={
-            props.isShowLabel ? props.inputWrapperClass : "col-span-12"
+            props.isShowLabel
+              ? props.selectWrapperClass
+              : "col-span-12 flex items-center"
           }
         >
-          <input
-            className={
-              props.inputClass +
-              " w-full h-10 px-5 placeholder-gray-400 border rounded focus:shadow-outline"
-            }
-            placeholder={props.placeholder}
-            disabled={props.isDisabled}
-            value={props.value}
+          <select
             onChange={handleChange}
-          />
-          {props.afterInputValue && (
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            {props.items.map((item: any, key: number) => {
+              return (
+                <option key={key} value={item}>
+                  {item}
+                </option>
+              );
+            })}
+          </select>
+          {props.afterSelectValue && (
             <p className="text-sm text-slate-700 opacity-70 whitespace-nowrap">
-              {props.afterInputValue}
+              {props.afterSelectValue}
             </p>
           )}
         </div>
@@ -46,34 +50,33 @@ const BaseInput = (props) => {
   );
 };
 
-BaseInput.propTypes = {
-  type: PropTypes.string,
+BaseSelect.propTypes = {
+  items: PropTypes.array.isRequired,
   value: PropTypes.any,
   isShowLabel: PropTypes.bool,
   label: PropTypes.string,
-  placeholder: PropTypes.string,
   afterInputValue: PropTypes.string,
   required: PropTypes.bool,
   labelWrapperClass: PropTypes.string,
-  inputWrapperClass: PropTypes.string,
+  selectWrapperClass: PropTypes.string,
   isDisabled: PropTypes.bool,
-  inputClass: PropTypes.string,
-  setValue: PropTypes.any,
+  selectClass: PropTypes.string,
+  setValue: PropTypes.func.isRequired,
 };
 
-BaseInput.defaultProps = {
-  type: "text",
+BaseSelect.defaultProps = {
+  items: [],
   value: "",
   isShowLabel: true,
   label: "",
   placeholder: "",
   afterInputValue: "",
   required: true,
+  selectWrapperClass: "col-span-8 flex items-center",
   labelWrapperClass:
     "col-span-4 p-2 text-md font-medium text-gray-900 dark:text-white bg-[#f0f3f7] flex items-center justify-between",
-  inputWrapperClass: "col-span-8",
   isDisabled: false,
-  inputClass: "",
+  selectClass: "",
 };
 
-export default BaseInput;
+export default BaseSelect;
