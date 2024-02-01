@@ -1,4 +1,4 @@
-import React, { ReactPropTypes } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 const BaseButton = (props: any) => {

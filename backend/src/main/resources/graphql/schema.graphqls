@@ -1,5 +1,10 @@
 scalar Date
 
+schema {
+    query: Query,
+    mutation: Mutation
+}
+
 type Query {
     getUsers: [User]!
     getUserById(id: ID): User!

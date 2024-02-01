@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import BaseInput from "../components/common/BaseInput";
 import BaseButton from "../components/common/BaseButton";
-import { useQuery } from "@apollo/client";
-import { GET_USERS } from "../queries/user";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { loading, error, data } = useQuery(GET_USERS);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>

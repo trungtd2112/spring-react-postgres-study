@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 const BaseRadio = (props: any) => {
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     props.setValue(e.target.value);
   };
   return (
