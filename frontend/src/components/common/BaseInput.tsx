@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import PropTypes from "prop-types";
 
-const BaseInput = (props) => {
-  const handleChange = (e) => {
+const BaseInput = (props: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     props.setValue(e.target.value);
   };
 

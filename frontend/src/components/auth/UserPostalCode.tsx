@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import React from "react";
-import BaseButton from "./BaseButton";
+import BaseButton from "../common/BaseButton";
 
-const UserPostalCode = (props) => {
-  const handleChange = (e) => {
+const UserPostalCode = (props: any) => {
+  const handleChange = (e: any) => {
     props.setValue(e.target.value);
   };
 
@@ -49,6 +49,7 @@ const UserPostalCode = (props) => {
               wrapperClass=""
               btnClass="bg-dark-green hover:bg-light-green text-white font-bold py-2 px-4 rounded ms-3 w-[120px]"
               btnText="住所検索"
+              onClick={() => {}}
             ></BaseButton>
           </div>
           <p className="text-sm text-slate-700 opacity-70 whitespace-nowrap ms-6">

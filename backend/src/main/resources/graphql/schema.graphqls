@@ -1,0 +1,44 @@
+scalar Date
+
+schema {
+    query: Query,
+    mutation: Mutation
+}
+
+type Query {
+    getUsers: [User]!
+    getUserById(id: ID): User!
+}
+
+type Mutation {
+    addUser(userInput: UserInput): User
+    updateUser(id: ID!, userInput: UserInput): User
+    deleteUser(id: ID!): String
+}
+
+type User {
+    id: ID!
+    email: String!
+    password: String!
+    is_active: Boolean!
+}
+
+input UserInput {
+    email: String!,
+    first_name_kanji: String!,
+    last_name_kanji: String!,
+    first_name_kana: String!,
+    last_name_kana: String!,
+    gender: String!,
+    date_of_birth: Date!,
+    postal_code: String!,
+    prefecture: String!,
+    district: String!,
+    additional_address: String,
+    phone_number: String!,
+    health_insurance_association: String!,
+    symbol: String!,
+    number: String!,
+    password: String!,
+    is_active: Boolean
+}

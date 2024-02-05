@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-const BaseRadio = (props) => {
-  const handleChange = (e) => {
+const BaseRadio = (props: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     props.setValue(e.target.value);
   };
   return (
@@ -26,7 +26,7 @@ const BaseRadio = (props) => {
               : "col-span-12 flex items-center"
           }
         >
-          {props.items.map((item, key) => {
+          {props.items.map((item: any, key: number) => {
             return (
               <div key={key}>
                 <input

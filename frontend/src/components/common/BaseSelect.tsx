@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-const BaseSelect = (props) => {
-  const handleChange = (e) => {
+const BaseSelect = (props: any) => {
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     props.setValue(e.target.value);
   };
 
@@ -31,7 +31,7 @@ const BaseSelect = (props) => {
             onChange={handleChange}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            {props.items.map((item, key) => {
+            {props.items.map((item: any, key: number) => {
               return (
                 <option key={key} value={item}>
                   {item}
