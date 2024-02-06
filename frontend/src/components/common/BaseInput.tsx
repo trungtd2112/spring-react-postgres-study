@@ -58,7 +58,7 @@ BaseInput.propTypes = {
   inputWrapperClass: PropTypes.string,
   isDisabled: PropTypes.bool,
   inputClass: PropTypes.string,
-  setValue: PropTypes.any,
+  setValue: PropTypes.func,
 };
 
 BaseInput.defaultProps = {

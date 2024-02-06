@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 
 const SelectBirthday = (props: any) => {
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
+  const [birthYear, setBirthYear] = useState("2000");
+  const [birthMonth, setBirthMonth] = useState("01");
+  const [birthDay, setBirthDay] = useState("01");
 
   useEffect(() => {
     const birthDate =
@@ -104,6 +104,7 @@ SelectBirthday.propTypes = {
   isShowLabel: PropTypes.bool,
   label: PropTypes.string,
   required: PropTypes.bool,
+  setValue: PropTypes.func.isRequired,
 };
 
 SelectBirthday.defaultProps = {

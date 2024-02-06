@@ -1,12 +1,3 @@
-""" Add user """
-mutation addUser($userInput: UserInput!) {
-  addUser(userInput: $userInput) {
-    id
-    email
-  }
-}
-
-""" Get all users """
 query getUsers {
   getUsers {
     id
@@ -14,9 +5,15 @@ query getUsers {
   }
 }
 
-""" Get specific user by ID """
 query getUserById($id: ID!) {
   getUserById(id: $id) {
+    id
+    email
+  }
+}
+
+mutation addUser($userInput: UserInput!) {
+  addUser(userInput: $userInput) {
     id
     email
   }
