@@ -4,10 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication()
 @EntityScan( basePackages = {"com.lab.spring.backend.models"} )
 @EnableJpaRepositories( basePackages = {"com.lab.spring.backend.repositories"} )
+@EnableAsync
 public class BackendApplication {
 
 	public static void main(String[] args) {

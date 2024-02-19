@@ -3,6 +3,7 @@ package com.lab.spring.backend.controllers;
 import com.lab.spring.backend.graphql.inputs.UserInput;
 import com.lab.spring.backend.models.User;
 import com.lab.spring.backend.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @MutationMapping
-    User addUser(@Argument UserInput userInput) {
+    User addUser(@Argument @Valid UserInput userInput) {
         return userService.addUser(userInput);
     }
 

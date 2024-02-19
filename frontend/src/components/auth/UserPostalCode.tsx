@@ -1,11 +1,19 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseButton from "../common/BaseButton";
 
 const UserPostalCode = (props: any) => {
-  const handleChange = (e: any) => {
-    props.setValue(e.target.value);
-  };
+  const [postalCodeFirstCharacters, setPostalCodeFirstCharacters] = useState(
+    props.postalCode.substring(0, 3)
+  );
+  const [postalCodeLastCharacters, setPostalCodeLastCharacters] = useState(
+    props.postalCode.substring(3, 7)
+  );
+
+  useEffect(() => {
+    const postalCode = postalCodeFirstCharacters + postalCodeLastCharacters;
+    props.setValue(postalCode);
+  }, [postalCodeFirstCharacters, postalCodeLastCharacters]);
 
   return (
     <>
@@ -31,8 +39,11 @@ const UserPostalCode = (props: any) => {
               }
               placeholder={props.placeholder}
               disabled={props.isDisabled}
-              value={props.value}
-              onChange={handleChange}
+              maxLength={3}
+              value={postalCodeFirstCharacters}
+              onChange={(e) => {
+                setPostalCodeFirstCharacters(e.target.value);
+              }}
             />
             <span className="flex justify-center items-center mx-2">-</span>
             <input
@@ -42,8 +53,11 @@ const UserPostalCode = (props: any) => {
               }
               placeholder={props.placeholder}
               disabled={props.isDisabled}
-              value={props.value}
-              onChange={handleChange}
+              maxLength={4}
+              value={postalCodeLastCharacters}
+              onChange={(e) => {
+                setPostalCodeLastCharacters(e.target.value);
+              }}
             />
             <BaseButton
               wrapperClass=""
@@ -55,6 +69,9 @@ const UserPostalCode = (props: any) => {
           <p className="text-sm text-slate-700 opacity-70 whitespace-nowrap ms-6">
             ハイフン(ー)なし、半角英数字で入力してください
           </p>
+          {props.errorMessage && (
+            <p className="text-red-500">{props.errorMessage}</p>
+          )}
         </div>
       </div>
     </>
@@ -62,7 +79,7 @@ const UserPostalCode = (props: any) => {
 };
 
 UserPostalCode.propTypes = {
-  type: PropTypes.string,
+  postalCode: PropTypes.string,
   value: PropTypes.any,
   isShowLabel: PropTypes.bool,
   label: PropTypes.string,
@@ -72,11 +89,12 @@ UserPostalCode.propTypes = {
   inputWrapperClass: PropTypes.string,
   isDisabled: PropTypes.bool,
   inputClass: PropTypes.string,
-  setValue: PropTypes.any,
+  setValue: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
 };
 
 UserPostalCode.defaultProps = {
-  type: "text",
+  postalCode: "",
   value: "",
   isShowLabel: true,
   label: "",

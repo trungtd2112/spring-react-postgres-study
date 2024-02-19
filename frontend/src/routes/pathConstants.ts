@@ -1,6 +1,6 @@
 const PathConstants = {
   Login: "/",
-  Register: "/register",
+  RegisterForm: "/register",
 };
 
 export default PathConstants;

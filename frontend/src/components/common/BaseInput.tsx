@@ -40,6 +40,9 @@ const BaseInput = (props: any) => {
               {props.afterInputValue}
             </p>
           )}
+          {props.errorMessage && (
+            <p className="text-red-500">{props.errorMessage}</p>
+          )}
         </div>
       </div>
     </>
@@ -58,7 +61,8 @@ BaseInput.propTypes = {
   inputWrapperClass: PropTypes.string,
   isDisabled: PropTypes.bool,
   inputClass: PropTypes.string,
-  setValue: PropTypes.any,
+  setValue: PropTypes.func,
+  errorMessage: PropTypes.string,
 };
 
 BaseInput.defaultProps = {
