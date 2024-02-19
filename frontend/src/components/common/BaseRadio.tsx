@@ -47,6 +47,9 @@ const BaseRadio = (props: any) => {
               {props.afterRadioValue}
             </p>
           )}
+          {props.errorMessage && (
+            <p className="text-red-500">{props.errorMessage}</p>
+          )}
         </div>
       </div>
     </>
@@ -64,6 +67,7 @@ BaseRadio.propTypes = {
   isDisabled: PropTypes.bool,
   radioClass: PropTypes.string,
   setValue: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
 };
 
 BaseRadio.defaultProps = {

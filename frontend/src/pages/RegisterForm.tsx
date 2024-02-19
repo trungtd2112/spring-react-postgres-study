@@ -1,63 +1,240 @@
 import React, { useEffect, useState } from "react";
-import BaseInput from "../components/common/BaseInput";
-import BaseButton from "../components/common/BaseButton";
-import BaseRadio from "../components/common/BaseRadio";
+import { useForm } from "react-hook-form";
 import SelectBirthday from "../components/auth/SelectBirthday";
 import UserAddress from "../components/auth/UserAddress";
+import BaseButton from "../components/common/BaseButton";
+import BaseInput from "../components/common/BaseInput";
+import BaseRadio from "../components/common/BaseRadio";
+import {
+  CONFIRM_EMAIL,
+  CONFIRM_PASSWORD,
+  DISTRICT,
+  EMAIL,
+  FIRST_NAME_KANJI,
+  GENDER,
+  HEALTH_INSURANCE_ASSOCIATION,
+  LAST_NAME_KANJI,
+  NUMBER,
+  PASSWORD,
+  PHONE_NUMBER,
+  POSTAL_CODE,
+  PREFECTURE,
+  SYMBOL,
+} from "../constants/fieldName";
+import {
+  EQUAL,
+  MAX_LENGTH,
+  MIN_LENGTH,
+  PATTERN,
+  REQUIRED,
+} from "../constants/validationMsg";
 import { useAddUserMutation } from "../generated/graphql";
+import { buildErrorMsg } from "../utilities/helper";
 
-const RegisterForm = () => {
-  const [firstNameKanji, setFirstNameKanji] = useState("");
-  const [lastNameKanji, setLastNameKanji] = useState("");
-  const [firstNameKana, setFirstNameKana] = useState("");
-  const [lastNameKana, setLastNameKana] = useState("");
-  const [gender, setGender] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [prefecture, setPrefecture] = useState("");
-  const [district, setDistrict] = useState("");
-  const [additionalAddress, setAdditionalAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [healthInsuranceAssociation, setHealthInsuranceAssociation] =
-    useState("");
-  const [symbol, setSymbol] = useState("");
-  const [number, setNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [confirmEmail, setConfirmEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+type FormInputs = {
+  firstNameKanji: string;
+  lastNameKanji: string;
+  firstNameKana: string;
+  lastNameKana: string;
+  gender: string;
+  dateOfBirth: string;
+  postalCode: string;
+  prefecture: string;
+  district: string;
+  additionalAddress: string;
+  phoneNumber: string;
+  healthInsuranceAssociation: string;
+  symbol: string;
+  number: string;
+  email: string;
+  confirmEmail: string;
+  password: string;
+  confirmPassword: string;
+};
 
+const RegisterForm = (): JSX.Element => {
   const [user, addUser] = useAddUserMutation();
-  const [errors, setErrors] = useState(Array<String>);
+  const [errorsBackend, setErrorsBackend] = useState(Array<String>);
+  const isEqualEmail = (confirmEmail: string) => {
+    return confirmEmail === getValues("email")
+      ? true
+      : buildErrorMsg(EMAIL + "は" + CONFIRM_EMAIL, EQUAL);
+  };
+  const isEqualPassword = (confirmPassword: string) => {
+    return confirmPassword === getValues("password")
+      ? true
+      : buildErrorMsg(PASSWORD + "は" + CONFIRM_PASSWORD, EQUAL);
+  };
 
-  const handleSumit = async () => {
-    setErrors([]);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    defaultValues: {
+      postalCode: "",
+      prefecture: "東京",
+      district: "",
+    },
+  });
+
+  register("firstNameKanji", {
+    required: {
+      value: true,
+      message: buildErrorMsg(FIRST_NAME_KANJI, REQUIRED),
+    },
+  });
+  register("lastNameKanji", {
+    required: {
+      value: true,
+      message: buildErrorMsg(LAST_NAME_KANJI, REQUIRED),
+    },
+  });
+  register("firstNameKana", {
+    required: {
+      value: true,
+      message: buildErrorMsg(FIRST_NAME_KANJI, REQUIRED),
+    },
+  });
+  register("lastNameKana", {
+    required: {
+      value: true,
+      message: buildErrorMsg(LAST_NAME_KANJI, REQUIRED),
+    },
+  });
+  register("gender", {
+    required: {
+      value: true,
+      message: buildErrorMsg(GENDER, REQUIRED),
+    },
+  });
+  register("dateOfBirth");
+  register("additionalAddress");
+  register("postalCode", {
+    required: {
+      value: true,
+      message: buildErrorMsg(POSTAL_CODE, REQUIRED),
+    },
+    minLength: {
+      value: 7,
+      message: buildErrorMsg(POSTAL_CODE, MIN_LENGTH, 7),
+    },
+    maxLength: {
+      value: 7,
+      message: buildErrorMsg(POSTAL_CODE, MAX_LENGTH, 7),
+    },
+  });
+  register("prefecture", {
+    required: {
+      value: true,
+      message: buildErrorMsg(PREFECTURE, REQUIRED),
+    },
+  });
+  register("district", {
+    required: {
+      value: true,
+      message: buildErrorMsg(DISTRICT, REQUIRED),
+    },
+  });
+  register("phoneNumber", {
+    required: {
+      value: true,
+      message: buildErrorMsg(PHONE_NUMBER, REQUIRED),
+    },
+    pattern: {
+      value: /^\d{10}$|^\d{11}$/,
+      message: buildErrorMsg(PHONE_NUMBER, PATTERN),
+    },
+  });
+  register("email", {
+    required: {
+      value: true,
+      message: buildErrorMsg(EMAIL, REQUIRED),
+    },
+    pattern: {
+      value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+      message: buildErrorMsg(EMAIL, PATTERN),
+    },
+  });
+  register("confirmEmail", {
+    required: {
+      value: true,
+      message: buildErrorMsg(CONFIRM_EMAIL, REQUIRED),
+    },
+    validate: { isEqualEmail },
+  });
+  register("password", {
+    required: {
+      value: true,
+      message: buildErrorMsg(PASSWORD, REQUIRED),
+    },
+  });
+  register("confirmPassword", {
+    required: {
+      value: true,
+      message: buildErrorMsg(CONFIRM_PASSWORD, REQUIRED),
+    },
+    validate: { isEqualPassword },
+  });
+  register("healthInsuranceAssociation", {
+    required: {
+      value: true,
+      message: buildErrorMsg(HEALTH_INSURANCE_ASSOCIATION, REQUIRED),
+    },
+  });
+  register("healthInsuranceAssociation", {
+    required: {
+      value: true,
+      message: buildErrorMsg(HEALTH_INSURANCE_ASSOCIATION, REQUIRED),
+    },
+  });
+  register("symbol", {
+    required: {
+      value: true,
+      message: buildErrorMsg(SYMBOL, REQUIRED),
+    },
+  });
+  register("number", {
+    required: {
+      value: true,
+      message: buildErrorMsg(NUMBER, REQUIRED),
+    },
+  });
+
+  const onSubmit = (data: FormInputs) => {
+    setErrorsBackend([]);
     addUser({
       userInput: {
-        first_name_kanji: firstNameKanji,
-        last_name_kanji: lastNameKanji,
-        first_name_kana: firstNameKana,
-        last_name_kana: lastNameKana,
-        gender: gender === "男性" ? "MALE" : "FEMALE",
-        date_of_birth: dateOfBirth,
-        postal_code: postalCode,
-        prefecture: prefecture,
-        district: district,
-        additional_address: additionalAddress,
-        health_insurance_association: healthInsuranceAssociation,
-        symbol: symbol,
-        number: number,
-        email: email,
-        password: password,
-        phone_number: phoneNumber,
+        first_name_kanji: data.firstNameKanji,
+        last_name_kanji: data.lastNameKanji,
+        first_name_kana: data.firstNameKana,
+        last_name_kana: data.lastNameKana,
+        gender: data.gender === "男性" ? "MALE" : "FEMALE",
+        date_of_birth: data.dateOfBirth,
+        postal_code: data.postalCode,
+        prefecture: data.prefecture,
+        district: data.district,
+        additional_address: data.additionalAddress,
+        health_insurance_association: data.healthInsuranceAssociation,
+        symbol: data.symbol,
+        number: data.number,
+        email: data.email,
+        password: data.password,
+        phone_number: data.phoneNumber,
       },
     }).then((result) => {
       console.log(result);
       if (result.error) {
-        setErrors(result.error.graphQLErrors.map((error) => error.message));
+        setErrorsBackend(
+          result.error.graphQLErrors.map((error) => error.message)
+        );
       }
     });
   };
+  const onError = (errors: any) => console.log(errors);
 
   return (
     <>
@@ -68,7 +245,10 @@ const RegisterForm = () => {
         <h3 className="text-lg text-center">
           お客様の基本情報を入力してください。
         </h3>
-        <div className="flex flex-col items-center px-40 py-16 mx-auto">
+        <form
+          className="flex flex-col items-center px-40 py-16 mx-auto"
+          onSubmit={handleSubmit(onSubmit, onError)}
+        >
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -78,16 +258,18 @@ const RegisterForm = () => {
                   placeholder={"例：田中"}
                   type={"text"}
                   inputWrapperClass={"col-span-5"}
-                  value={lastNameKanji}
-                  setValue={setLastNameKanji}
+                  value={watch("lastNameKanji")}
+                  setValue={(value) => setValue("lastNameKanji", value)}
+                  errorMessage={errors.lastNameKanji?.message as string}
                 ></BaseInput>
                 <BaseInput
                   isShowLabel={true}
                   label={"名"}
                   placeholder={"例：田中"}
                   type={"text"}
-                  value={firstNameKanji}
-                  setValue={setFirstNameKanji}
+                  value={watch("firstNameKanji")}
+                  setValue={(value) => setValue("firstNameKanji", value)}
+                  errorMessage={errors.firstNameKanji?.message as string}
                 ></BaseInput>
                 <BaseInput
                   isShowLabel={true}
@@ -95,38 +277,45 @@ const RegisterForm = () => {
                   placeholder={"例：タナカ"}
                   type={"text"}
                   inputWrapperClass={"col-span-5"}
-                  value={lastNameKana}
-                  setValue={setLastNameKana}
+                  value={watch("lastNameKana")}
+                  setValue={(value) => setValue("lastNameKana", value)}
+                  errorMessage={errors.lastNameKana?.message as string}
                 ></BaseInput>
                 <BaseInput
                   isShowLabel={true}
                   label={"名（カナ）"}
                   placeholder={"例：タナカ"}
                   type={"text"}
-                  value={firstNameKana}
-                  setValue={setFirstNameKana}
+                  value={watch("firstNameKana")}
+                  setValue={(value) => setValue("firstNameKana", value)}
+                  errorMessage={errors.firstNameKana?.message as string}
                 ></BaseInput>
                 <BaseRadio
                   label={"性別"}
-                  value={gender}
-                  setValue={setGender}
+                  value={watch("gender")}
+                  setValue={(value) => setValue("gender", value)}
+                  errorMessage={errors.gender?.message as string}
                   items={["男性", "女性"]}
                 ></BaseRadio>
                 <div></div>
                 <SelectBirthday
-                  setValue={setDateOfBirth}
+                  setValue={(value) => setValue("dateOfBirth", value)}
                   label={"生年月日"}
                 ></SelectBirthday>
               </div>
               <UserAddress
-                postalCode={postalCode}
-                setPostalCode={setPostalCode}
-                prefecture={prefecture}
-                setPrefecture={setPrefecture}
-                district={district}
-                setDistrict={setDistrict}
-                additionalAddress={additionalAddress}
-                setAdditionalAddress={setAdditionalAddress}
+                postalCode={watch("postalCode")}
+                setPostalCode={(value) => setValue("postalCode", value)}
+                errorPostalCode={errors.postalCode?.message as string}
+                prefecture={watch("prefecture")}
+                setPrefecture={(value) => setValue("prefecture", value)}
+                district={watch("district")}
+                setDistrict={(value) => setValue("district", value)}
+                errorDistrict={errors.district?.message as string}
+                additionalAddress={watch("additionalAddress")}
+                setAdditionalAddress={(value) =>
+                  setValue("additionalAddress", value)
+                }
               ></UserAddress>
               <BaseInput
                 labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white bg-[#f0f3f7] flex items-center justify-between"
@@ -135,22 +324,25 @@ const RegisterForm = () => {
                 afterInputValue={
                   "ハイフン(ー)なし、半角英数字で入力してください"
                 }
-                value={phoneNumber}
-                setValue={setPhoneNumber}
+                value={watch("phoneNumber")}
+                setValue={(value) => setValue("phoneNumber", value)}
+                errorMessage={errors.phoneNumber?.message as string}
               ></BaseInput>
               <BaseInput
                 labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white bg-[#f0f3f7] flex items-center justify-between"
                 label={"メールアドレス"}
                 inputWrapperClass={"col-span-10"}
-                value={email}
-                setValue={setEmail}
+                value={watch("email")}
+                setValue={(value) => setValue("email", value)}
+                errorMessage={errors.email?.message as string}
               ></BaseInput>
               <BaseInput
                 labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white bg-[#f0f3f7] flex items-center justify-between"
                 label={"メールアドレス（確認用）"}
                 inputWrapperClass={"col-span-10"}
-                value={confirmEmail}
-                setValue={setConfirmEmail}
+                value={watch("confirmEmail")}
+                setValue={(value) => setValue("confirmEmail", value)}
+                errorMessage={errors.confirmEmail?.message as string}
               ></BaseInput>
               <div className="grid grid-cols-2 gap-4">
                 <BaseInput
@@ -159,48 +351,61 @@ const RegisterForm = () => {
                   afterInputValue={
                     "半角・全角英数（小文字）・記号４文字以上でご入力ください"
                   }
-                  value={password}
-                  setValue={setPassword}
+                  value={watch("password")}
+                  setValue={(value) => setValue("password", value)}
+                  errorMessage={errors.password?.message as string}
                 ></BaseInput>
                 <div></div>
                 <BaseInput
                   label={"パスワード（確認用）"}
                   inputWrapperClass={"col-span-5"}
-                  value={confirmPassword}
-                  setValue={setConfirmPassword}
+                  value={watch("confirmPassword")}
+                  setValue={(value) => setValue("confirmPassword", value)}
+                  errorMessage={errors.confirmPassword?.message as string}
                 ></BaseInput>
                 <div></div>
                 <BaseInput
                   label={"健康保険組合"}
                   inputWrapperClass={"col-span-5"}
-                  value={healthInsuranceAssociation}
-                  setValue={setHealthInsuranceAssociation}
+                  value={watch("healthInsuranceAssociation")}
+                  setValue={(value) =>
+                    setValue("healthInsuranceAssociation", value)
+                  }
+                  errorMessage={
+                    errors.healthInsuranceAssociation?.message as string
+                  }
                 ></BaseInput>
                 <div></div>
                 <BaseInput
                   label={"記号"}
                   inputWrapperClass={"col-span-5"}
-                  value={symbol}
-                  setValue={setSymbol}
+                  value={watch("symbol")}
+                  setValue={(value) => setValue("symbol", value)}
+                  errorMessage={errors.symbol?.message as string}
                 ></BaseInput>
                 <BaseInput
                   label={"番号"}
-                  value={number}
-                  setValue={setNumber}
+                  value={watch("number")}
+                  setValue={(value) => setValue("number", value)}
+                  errorMessage={errors.number?.message as string}
                 ></BaseInput>
               </div>
-              {errors.map(function (error, i) {
+              {errorsBackend.map(function (errorBackend, i) {
                 return (
                   <p className="bg-red-500" key={i}>
-                    {error}
+                    {errorBackend}
                   </p>
                 );
               })}
             </div>
           </div>
-          <BaseButton btnText={"確認"} onClick={handleSumit}></BaseButton>
+          <BaseButton
+            type={"submit"}
+            btnText={"確認"}
+            onClick={() => {}}
+          ></BaseButton>
           <p>Back</p>
-        </div>
+        </form>
       </section>
     </>
   );

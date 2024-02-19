@@ -69,6 +69,9 @@ const UserPostalCode = (props: any) => {
           <p className="text-sm text-slate-700 opacity-70 whitespace-nowrap ms-6">
             ハイフン(ー)なし、半角英数字で入力してください
           </p>
+          {props.errorMessage && (
+            <p className="text-red-500">{props.errorMessage}</p>
+          )}
         </div>
       </div>
     </>
@@ -87,6 +90,7 @@ UserPostalCode.propTypes = {
   isDisabled: PropTypes.bool,
   inputClass: PropTypes.string,
   setValue: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
 };
 
 UserPostalCode.defaultProps = {

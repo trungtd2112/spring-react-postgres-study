@@ -15,6 +15,7 @@ const UserAddress = (props: any) => {
           <UserPostalCode
             postalCode={props.postalCode}
             setValue={props.setPostalCode}
+            errorMessage={props.errorPostalCode}
           ></UserPostalCode>
           <BaseSelect
             labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white flex items-center justify-between mb-4"
@@ -30,6 +31,7 @@ const UserAddress = (props: any) => {
             label="市町村区・番地"
             value={props.district}
             setValue={props.setDistrict}
+            errorMessage={props.errorDistrict}
           ></BaseInput>
           <BaseInput
             labelWrapperClass="col-span-2 p-2 text-md font-medium text-gray-900 dark:text-white flex items-center justify-between mb-4"
@@ -48,10 +50,12 @@ const UserAddress = (props: any) => {
 UserAddress.propTypes = {
   postalCode: PropTypes.string.isRequired,
   setPostalCode: PropTypes.func.isRequired,
+  errorPostalCode: PropTypes.string,
   prefecture: PropTypes.string.isRequired,
   setPrefecture: PropTypes.func.isRequired,
   district: PropTypes.string.isRequired,
   setDistrict: PropTypes.func.isRequired,
+  errorDistrict: PropTypes.string,
   additionalAddress: PropTypes.string,
   setAdditionalAddress: PropTypes.func.isRequired,
 };
