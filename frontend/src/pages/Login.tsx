@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import BaseInput from "../components/common/BaseInput";
 import BaseButton from "../components/common/BaseButton";
+import { Link } from "react-router-dom";
+import PathConstants from "../routes/pathConstants";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -39,7 +41,9 @@ const Login = () => {
               </form>
             </div>
           </div>
-          <BaseButton btnText="新規会員登録" onClick={() => {}}></BaseButton>
+          <Link to={PathConstants.RegisterForm}>
+            <BaseButton btnText="新規会員登録" onClick={() => {}}></BaseButton>
+          </Link>
         </div>
       </section>
     </>

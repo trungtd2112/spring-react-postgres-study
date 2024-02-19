@@ -80,13 +80,6 @@ export type UserInput = {
   symbol: Scalars['String']['input'];
 };
 
-export type AddUserMutationVariables = Exact<{
-  userInput: UserInput;
-}>;
-
-
-export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'User', id: string, email: string } | null };
-
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -99,19 +92,14 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = { __typename?: 'Query', getUserById: { __typename?: 'User', id: string, email: string } };
 
+export type AddUserMutationVariables = Exact<{
+  userInput: UserInput;
+}>;
 
-export const AddUserDocument = gql`
-    mutation addUser($userInput: UserInput!) {
-  addUser(userInput: $userInput) {
-    id
-    email
-  }
-}
-    `;
 
-export function useAddUserMutation() {
-  return Urql.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument);
-};
+export type AddUserMutation = { __typename?: 'Mutation', addUser?: { __typename?: 'User', id: string, email: string } | null };
+
+
 export const GetUsersDocument = gql`
     query getUsers {
   getUsers {
@@ -135,4 +123,16 @@ export const GetUserByIdDocument = gql`
 
 export function useGetUserByIdQuery(options: Omit<Urql.UseQueryArgs<GetUserByIdQueryVariables>, 'query'>) {
   return Urql.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>({ query: GetUserByIdDocument, ...options });
+};
+export const AddUserDocument = gql`
+    mutation addUser($userInput: UserInput!) {
+  addUser(userInput: $userInput) {
+    id
+    email
+  }
+}
+    `;
+
+export function useAddUserMutation() {
+  return Urql.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument);
 };
