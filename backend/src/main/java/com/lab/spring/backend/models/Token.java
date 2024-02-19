@@ -24,7 +24,8 @@ public class Token {
     public Token() {
     }
 
-    public Token(TokenType token_type, Date issued_at, Date expires_in, User user) {
+    public Token(String token, TokenType token_type, Date issued_at, Date expires_in, User user) {
+        this.token = token;
         this.token_type = token_type;
         this.issued_at = issued_at;
         this.expires_in = expires_in;
